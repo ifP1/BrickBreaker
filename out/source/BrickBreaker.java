@@ -5,6 +5,8 @@ import processing.opengl.*;
 
 import java.util.Scanner; 
 import java.io.File; 
+import processing.sound.*; 
+import processing.sound.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -20,6 +22,7 @@ public class BrickBreaker extends PApplet {
 
 
 
+
 Platform pl;
 Ball[] ba;
 Brick[][] br;
@@ -28,12 +31,14 @@ boolean started = false;
 int ballCount = 0, brickCount = 0;
 float multi, Score;
 PFont boldFont, normalFont;
+SoundFile bounce;
+
 
 public void setup() {
   
   boldFont = createFont("Lucida Sans Typewriter Bold", 11);
   normalFont = createFont("Lucida Sans Typewriter", 11);
-
+  bounce = new SoundFile(this, "assets/bouncing_ball.wav");
 
 }
 
@@ -42,7 +47,7 @@ public void draw() {
   if (started) {
     pl.tick();
     for (int i = 0; i < ba.length; i++) {
-      ba[i].tick();
+      ba[i].tick(bounce);
     }
     for (int i = 0; i < br.length; i++) {
       for (int j = 0; j < br[i].length; j++) {
@@ -57,8 +62,21 @@ public void draw() {
       lose();
     }
   } else {
+    // Brick Breaker ASCII-Art
     textFont(boldFont, 11);
-    text(" ______     ______     __     ______     __  __\n/\\  == \\   /\\  == \\   /\\ \\   /\\  ___\\   /\\ \\/ /\n \\ \\  __<   \\ \\  __<   \\ \\ \\  \\ \\ \\____  \\ \\  _\"-.\n  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\\n   \\/_____/   \\/_/ /_/   \\/_/   \\/_____/   \\/_/\\/_/\n     ______     ______     ______     ______     __  __     ______     ______    \n    /\\  == \\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\ \\/ /    /\\  ___\\   /\\  == \\   \n     \\ \\  __<   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\  _\"-.  \\ \\  __\\   \\ \\  __<   \n      \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n       \\/_____/   \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/_/\\/_/   \\/_____/   \\/_/ /_/ \n\nUnser Beitrag zum Brick Breaker \"Wettbewerb\"", 100, 25);
+    text("" +
+    " ______     ______     __     ______     __  __    " + "\n" +
+    "/\\  == \\   /\\  == \\   /\\ \\   /\\  ___\\   /\\ \\/ /             " + "\n" +
+    "\\ \\  __<   \\ \\  __<   \\ \\ \\  \\ \\ \\____  \\ \\  _\"-.     " +"\n" +
+    " \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\   " + "\n" +
+    "  \\/_____/   \\/_/ /_/   \\/_/   \\/_____/   \\/_/\\/_/       " + "\n" +
+    "       ______     ______     ______     ______     __  __     ______     ______   " + "\n" +
+    "      /\\  == \\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\ \\/ /    /\\  ___\\   /\\  == \\  " + "\n" +
+    "      \\ \\  __<   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\  _\"-.  \\ \\  __\\   \\ \\  __< " + "\n" +
+    "       \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ " +"\n" +
+    "        \\/_____/   \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/_/\\/_/   \\/_____/   \\/_/ /_/ " +"\n" +
+    "" + "\n" +
+    "Unser Beitrag zum Brick Breaker \"Wettbewerb\"", 100, 25);    
     textFont(normalFont, 11);
     text("Select Level 0 - 9\nLvl 0 - Das Tor\nLvl 1 - Der Stern \nLvl 2 - Der Berg\nLvl 3 - Der Vogel\nLvl 4 - Der Himmel\nLvl 5 - Die Faust\nLvl 6 - Die Welle\nLvl 7 - Der Teppich\nLvl 8 - Die Primzahlen\nLvl 9 - Zufällig\n\n>>>", 100, 250);
     if (keyPressed) {
@@ -114,7 +132,7 @@ public void start(int i) {
 public void lose() {
   background(100, 10, 10);
   text("▓██   ██▓ ▒█████   █    ██     ██▓     ▒█████    ██████ ▓█████ \n ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ \n  ▒██ ██░▒██░  ██▒▓██  ▒██░   ▒██░    ▒██░  ██▒░ ▓██▄   ▒███   \n  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ \n  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░██████▒░ ████▓▒░▒██████▒▒░▒████▒\n   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒    ░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░\n ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░    ░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░\n ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░      ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░   \n ░ ░         ░ ░     ░            ░  ░    ░ ░        ░     ░  ░\n ░ ░                                               ", 100, 50);
-  text("You Lose!\nPress TAB to restart!\nScore: " + (Score - (Score % 0.01f)), 100, 250);
+  text("You Lose!\nDrücke <Tab>, um fortzufahren...\nScore: " + (Score - (Score % 0.01f)), 100, 250);
   if (keyPressed && key == TAB) {
     started = false;
   }
@@ -182,12 +200,14 @@ public void levelBuilder(int txt) {
     }
   }
 }
+
+
 class Ball {
 
   float d = 15;
   float x = width / 2, y = pl.y - d / 2 - 2;
   boolean stick = true, ingame = true;
-  float xSpeed = 0, ySpeed = 0;
+  float xSpeed = 0, ySpeed = 0;	
 
   Ball(boolean sticky) {
     ballCount++;
@@ -199,7 +219,7 @@ class Ball {
     }
   }
 
-  public void tick() {
+  public void tick(SoundFile bounce) {
     if (stick) {
       stick();
       if (keyPressed && key == 32) {
@@ -209,7 +229,7 @@ class Ball {
         ySpeed = -4;
       }
     } else {
-      move();
+      move(bounce);
     }
     anzeigen();
   }
@@ -223,11 +243,11 @@ class Ball {
     x = pl.x;
   }
 
-  public void move() {
+  public void move(SoundFile bounce) {
     if (y < 2 * height) {
-      wallCollDect();
-      platformCollDect();
-      brickCollDect();
+      wallCollDect(bounce);
+      platformCollDect(bounce);
+      brickCollDect(bounce);
 
       x += xSpeed;
       y += ySpeed;
@@ -238,26 +258,31 @@ class Ball {
     xSpeed += (pl.x - pl.xlast) / 7;
   }
 
-  public void wallCollDect() {
+  public void wallCollDect(SoundFile bounce) {
     if (x < d / 2) {
+      bounce.play();
       xSpeed *= -1;
     }
     if (x > width - d / 2) {
+      bounce.play();
       xSpeed *= -1;
     }
     if (y < d / 2) {
+      bounce.play();
       ySpeed *= -1;
     }
     if (y > height + d / 2 && ingame) {
+      bounce.play();
       ballCount--;
       ingame = false;
       multi = 1;
     }
   }
 
-  public void platformCollDect() {
+  public void platformCollDect(SoundFile bounce) {
     //check X collision
     if (x + d / 2 + xSpeed > pl.x - pl.breite / 2 && x - d / 2 + xSpeed < pl.x + pl.breite / 2 && y + d / 2 > pl.y && y - d / 2 < pl.y + pl.hoehe) {
+      bounce.play();
       xSpeed *= -1;
       multi += 0.1f;
       calcxSpeed();
@@ -265,24 +290,27 @@ class Ball {
 
     //check Y collision
     if (x + d / 2 > pl.x - pl.breite / 2 && x - d / 2 < pl.x + pl.breite / 2 && y + d / 2 + ySpeed > pl.y && y - d / 2 + ySpeed < pl.y + pl.hoehe) {
+      bounce.play();
       ySpeed *= -1;
       multi += 0.1f;
       calcxSpeed();
     }
   }
 
-  public void brickCollDect() {
+  public void brickCollDect(SoundFile bounce) {
     for (int i = 0; i < br.length; i++) {
       for (int j = 0; j < br[i].length; j++) {
         if (br[i][j].heile) {
           //check X collision
           if (x + d + xSpeed > br[i][j].x && x + xSpeed < br[i][j].x + br[i][j].breite && y + d > br[i][j].y && y < br[i][j].y + br[i][j].hoehe) {
+            bounce.play();
             xSpeed *= -1;
             br[i][j].hit();
           }
 
           //check Y collision
           if (x + d> br[i][j].x && x < br[i][j].x + br[i][j].breite && y + d + ySpeed > br[i][j].y && y + ySpeed < br[i][j].y + br[i][j].hoehe) {
+            bounce.play();
             ySpeed *= -1;
             br[i][j].hit();
           }

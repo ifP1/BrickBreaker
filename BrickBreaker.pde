@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.File;
+import processing.sound.*;
 
 Platform pl;
 Ball[] ba;
@@ -9,12 +10,14 @@ boolean started = false;
 int ballCount = 0, brickCount = 0;
 float multi, Score;
 PFont boldFont, normalFont;
+SoundFile bounce;
+
 
 void setup() {
   size(800, 600);
   boldFont = createFont("Lucida Sans Typewriter Bold", 11);
   normalFont = createFont("Lucida Sans Typewriter", 11);
-
+  bounce = new SoundFile(this, "assets/bouncing_ball.wav");
 
 }
 
@@ -23,7 +26,7 @@ void draw() {
   if (started) {
     pl.tick();
     for (int i = 0; i < ba.length; i++) {
-      ba[i].tick();
+      ba[i].tick(bounce);
     }
     for (int i = 0; i < br.length; i++) {
       for (int j = 0; j < br[i].length; j++) {
@@ -38,8 +41,21 @@ void draw() {
       lose();
     }
   } else {
+    // Brick Breaker ASCII-Art
     textFont(boldFont, 11);
-    text(" ______     ______     __     ______     __  __\n/\\  == \\   /\\  == \\   /\\ \\   /\\  ___\\   /\\ \\/ /\n \\ \\  __<   \\ \\  __<   \\ \\ \\  \\ \\ \\____  \\ \\  _\"-.\n  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\\n   \\/_____/   \\/_/ /_/   \\/_/   \\/_____/   \\/_/\\/_/\n     ______     ______     ______     ______     __  __     ______     ______    \n    /\\  == \\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\ \\/ /    /\\  ___\\   /\\  == \\   \n     \\ \\  __<   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\  _\"-.  \\ \\  __\\   \\ \\  __<   \n      \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n       \\/_____/   \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/_/\\/_/   \\/_____/   \\/_/ /_/ \n\nUnser Beitrag zum Brick Breaker \"Wettbewerb\"", 100, 25);
+    text("" +
+    " ______     ______     __     ______     __  __    " + "\n" +
+    "/\\  == \\   /\\  == \\   /\\ \\   /\\  ___\\   /\\ \\/ /             " + "\n" +
+    "\\ \\  __<   \\ \\  __<   \\ \\ \\  \\ \\ \\____  \\ \\  _\"-.     " +"\n" +
+    " \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\   " + "\n" +
+    "  \\/_____/   \\/_/ /_/   \\/_/   \\/_____/   \\/_/\\/_/       " + "\n" +
+    "       ______     ______     ______     ______     __  __     ______     ______   " + "\n" +
+    "      /\\  == \\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\ \\/ /    /\\  ___\\   /\\  == \\  " + "\n" +
+    "      \\ \\  __<   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\  _\"-.  \\ \\  __\\   \\ \\  __< " + "\n" +
+    "       \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ " +"\n" +
+    "        \\/_____/   \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/_/\\/_/   \\/_____/   \\/_/ /_/ " +"\n" +
+    "" + "\n" +
+    "Unser Beitrag zum Brick Breaker \"Wettbewerb\"", 100, 25);    
     textFont(normalFont, 11);
     text("Select Level 0 - 9\nLvl 0 - Das Tor\nLvl 1 - Der Stern \nLvl 2 - Der Berg\nLvl 3 - Der Vogel\nLvl 4 - Der Himmel\nLvl 5 - Die Faust\nLvl 6 - Die Welle\nLvl 7 - Der Teppich\nLvl 8 - Die Primzahlen\nLvl 9 - Zufällig\n\n>>>", 100, 250);
     if (keyPressed) {
