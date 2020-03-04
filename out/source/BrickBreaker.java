@@ -374,6 +374,10 @@ class Platform {
 
   public void anzeigen() {
     rect(x - breite / 2, y, breite, hoehe);
+    // Ecken des Rechtecks
+    ellipse(x- breite / 2, y + hoehe / 2, hoehe, hoehe);
+    ellipse(x + breite / 2, y + hoehe / 2, hoehe, hoehe);
+    line(0, y + hoehe + 5, width, y + hoehe + 5);
   }
 
   public void move() {
