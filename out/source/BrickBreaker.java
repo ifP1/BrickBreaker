@@ -57,7 +57,7 @@ public void draw() {
     for (int i = 0; i < po.length; i++) {
       po[i].tick();
     }
-    text("Score: " + (Score - (Score % 0.01f)), 20, height - 30);
+    text("Score: " + (int) (Score), 20, height - 30);
     if (ballCount <= 0) {
       lose();
     }
@@ -78,7 +78,14 @@ public void draw() {
     "" + "\n" +
     "Unser Beitrag zum Brick Breaker \"Wettbewerb\"", 100, 25);    
     textFont(normalFont, 11);
-    text("Select Level 0 - 9\nLvl 0 - Das Tor\nLvl 1 - Der Stern \nLvl 2 - Der Berg\nLvl 3 - Der Vogel\nLvl 4 - Der Himmel\nLvl 5 - Die Faust\nLvl 6 - Die Welle\nLvl 7 - Der Teppich\nLvl 8 - Die Primzahlen\nLvl 9 - Zufällig\n\n>>>", 100, 250);
+    text("[LEVEL SELECTION] \nLVL 0 - Das Tor \nLVL 1 - Der Stern \nLVL 2 - Der Berg\nLVL 3 - Der Vogel\nLVL 4 - Der Himmel\nLVL 5 - Die Faust\nLVL 6 - Die Welle\nLVL 7 - Der Teppich\nLVL 8 - Die Primzahlen\nLVL 9 - Zufällig ¯\\_(ツ)_/¯\n\n>>>" + "\n" + 
+    "" + "\n" + 
+    "HOW TO PLAY" + "\n" + 
+    "- Gebe eine Ziffer ein, um ein Level zu starten." + "\n" + 
+    "- Wenn alle Bälle im Boden verschwinden, verlierst du und du kannst nur verlieren T_T." + "\n" + 
+    "- Versuche aber trotzdem, die höchstmögliche Punktzahl zu erreichen." + "\n" + 
+    "- Der Ball kann durch die Geschwindigkeit der Platform abgelenkt und beschleunigt werden."
+    , 100, 250);
     if (keyPressed) {
       switch(key) {
       case '0':
@@ -132,7 +139,7 @@ public void start(int i) {
 public void lose() {
   background(100, 10, 10);
   text("▓██   ██▓ ▒█████   █    ██     ██▓     ▒█████    ██████ ▓█████ \n ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ \n  ▒██ ██░▒██░  ██▒▓██  ▒██░   ▒██░    ▒██░  ██▒░ ▓██▄   ▒███   \n  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ \n  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░██████▒░ ████▓▒░▒██████▒▒░▒████▒\n   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒    ░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░\n ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░    ░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░\n ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░      ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░   \n ░ ░         ░ ░     ░            ░  ░    ░ ░        ░     ░  ░\n ░ ░                                               ", 100, 50);
-  text("You Lose!\nDrücke <Tab>, um fortzufahren...\nScore: " + (Score - (Score % 0.01f)), 100, 250);
+  text("You Lose!\nDrücke <Tab>, um fortzufahren...\nScore: " + (int) Score, 100, 250);
   if (keyPressed && key == TAB) {
     started = false;
   }
